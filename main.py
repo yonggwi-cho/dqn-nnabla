@@ -66,10 +66,10 @@ def train():
     # create network
     with nn.parameter_scope("dqn"):
         q = dqn(image, test=False)
-        q.prersistent = True # Not to clear at backward
+        q.persistent = True # Not to clear at backward
     with nn.parameter_scope("target"):
         target_q = dqn(image_target, test=False)
-        target_q.prersistent = True # Not to clear at backward
+        target_q.persistent = True # Not to clear at backward
 
     # loss definition
     a = nn.Variable([Config.BATCH_SIZE, 1])
@@ -123,6 +123,7 @@ def train():
             observation_next, reward, done, info = env.step(action)
             observation_next = preprocess_frame(observation_next)
             total_reward += reward
+            env.render()
             # TODO clip reward
 
             # update replay memory (FIFO)
